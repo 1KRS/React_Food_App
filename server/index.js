@@ -8,7 +8,7 @@ const διακ = express();
 // Σύνδεση σε Βάση Δεδομένων (Connect to Database)
 
 // Αρχικές Τιμές (Initial Values)
-const πύλη = 3000;
+const πύλη = 8000;
 
 // Δεδομένα (Data)
 
@@ -26,6 +26,11 @@ const πύλη = 3000;
 });
 
 // GET
+// διακ.get('/', (req, res) => {
+//   console.log('Ούλε τε και μάλα χαίρε!');
+//   res.('Ούλε τε και μάλα χαίρε!')
+// })
+
 διακ.get('/meals', async (req, res) => {
   const meals = await fs.readFile('./data/available-meals.json', 'utf8');
   res.json(JSON.parse(meals));
@@ -35,11 +40,13 @@ const πύλη = 3000;
 διακ.post('/orders', async (req, res) => {
   const orderData = req.body.order;
 
-  if (orderData === null || orderData.items === null || orderData.items === []) {
-    return res
-      .status(400)
-      .json({ message: 'Missing data.' });
-  }
+  // if (
+  //   orderData === null ||
+  //   orderData.items === null ||
+  //   orderData.items === []
+  // ) {
+  //   return res.status(400).json({ message: 'Missing data.' });
+  // }
 
   if (
     orderData.customer.email === null ||
@@ -76,7 +83,7 @@ const πύλη = 3000;
 
 // DELETE
 
-// Κώδικας Έπειτα HTTP Αιτημάτων 
+// Κώδικας Έπειτα HTTP Αιτημάτων
 διακ.use((req, res) => {
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
