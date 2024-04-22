@@ -1,8 +1,22 @@
 import logoImg from '../assets/images/logo/logo.jpg';
 import styled from 'styled-components';
 import Button from './Button';
+import { useContext } from 'react';
+import CartContext from '../store/cartContext';
+import UserActionsContext from '../store/userActionsContext';
 
 const Header = () => {
+  const cartCtx = useContext(CartContext);
+  const userCtx = useContext(UserActionsContext);
+
+  const cartQuantity = cartCtx.meals.reduce((totalMealsInTheCart, meal) => {
+    return totalMealsInTheCart + meal.quantity;
+  }, 0);
+
+  const handleShowCart = () => {
+    userCtx.showCart();
+  };
+
   return (
     <MainHeader>
       <div id="title">
@@ -11,7 +25,9 @@ const Header = () => {
       </div>
 
       <nav>
-        <Button textOnly>Cart (0)</Button>
+        <Button textOnly onClick={handleShowCart}>
+          Cart ({cartQuantity})
+        </Button>
       </nav>
     </MainHeader>
   );
