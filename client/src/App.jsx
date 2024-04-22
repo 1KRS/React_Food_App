@@ -1,21 +1,19 @@
-import styled from 'styled-components';
+import Header from './components/Header';
+import Meals from './components/Catalog';
+import { CartContextProvider } from './store/cartContext';
+import { UserActionsContextProvider } from './store/userActionsContext';
+import Cart from './components/Cart';
 
 function App() {
   return (
-    <Wrapper className="App">
-     <h1 >🇬🇷🇬🇷🇬🇷</h1>
-      <h1 >Ούλε τε και μάλα χαίρε!</h1>
-      <h1 >🤩</h1>
-    </Wrapper>
+    <UserActionsContextProvider>
+      <CartContextProvider>
+        <Header />
+        <Meals />
+        <Cart />
+      </CartContextProvider>
+    </UserActionsContextProvider>
   );
 }
-
-const Wrapper = styled.main`
-  h1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`;
 
 export default App;
