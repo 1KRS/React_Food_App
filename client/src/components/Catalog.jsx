@@ -1,30 +1,30 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Meal from './Meal';
+import useHttp from '../hooks/useHttp';
+import Error from './Error';
+
+const requestConfig = {};
 
 const Catalog = () => {
-  const [loadedMeals, setLoadedMeals] = useState([]);
+  const {
+    data: loadedMeals,
+    isLoading,
+    error,
+  } = useHttp('http://localhost:8000/meals', requestConfig, []);
 
-  useEffect(() => {
-    const fetchMeals = async () => {
-      // try catch εδώ//
-      const response = await fetch('http://localhost:8000/meals');
+  if (isLoading) {
+    return <LoadingWrapper>Fetching meals...</LoadingWrapper>;
+  }
 
-      if (!response.ok) {
-        // ...
-      }
-
-      const meals = await response.json();
-      setLoadedMeals(meals);
-    };
-
-    fetchMeals();
-  }, []);
+  if (error) {
+    return <Error title="Failed to fetch meals" message={error} />;
+  }
 
   return (
     <CatalogWrapper>
       {loadedMeals.map((meal) => (
-        <Meal key={meal.id}
+        <Meal
+          key={meal.id}
           id={meal.id}
           name={meal.name}
           image={meal.image}
@@ -35,6 +35,11 @@ const Catalog = () => {
     </CatalogWrapper>
   );
 };
+
+const LoadingWrapper = styled.p`
+  display: flex;
+  justify-content: center;
+`;
 
 const CatalogWrapper = styled.ul`
   width: 90%;
